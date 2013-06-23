@@ -15,23 +15,24 @@
   </head>
   <body>
     <nav>
+      <div id="sourceTables">
+        <p class="inline-select">
+          <label for="sourceTable">Source:</label>
+          <select id="sourceTable"></select>
+        </p>
+      </div>
       <ul id="chartTypes" class="nav nav-pills">
         <li><a href="#barChartSettings" data-toggle="pill" data-type="ColumnChart">Bar Chart</a></li>
         <li><a href="#lineChartSettings" data-toggle="pill" data-type="LineChart">Line Graph</a></li>
         <li><a href="#scatterChartSettings" data-toggle="pill" data-type="ScatterChart">Scatter Graph</a></li>
         <li><a href="#pieChartSettings" data-toggle="pill" data-type="PieChart">Pie Chart</a></li>
       </ul>
-      <div id="sourceTables">
-        <h2>Source table:</h2>
-        <select></select>
-      </div>
       <div id="barChartSettings">
-        <h2>Bar chart settings:</h2>
-        <p>
+        <p class="inline-select">
           <label for="barChartXAxis">X-axis:</label>
           <select id="barChartXAxis" class="columns hAxis"></select>
         </p>
-        <p>
+        <p class="inline-select">
           <label for="barChartYAxis">Y-axis:</label>
           <select id="barChartYAxis" class="columns vAxis"></select>
         </p>
@@ -43,13 +44,10 @@
         </p>
       </div>
       <div id="lineChartSettings">
-        <h2>Line graph settings:</h2>
       </div>
       <div id="scatterChartSettings">
-        <h2>Scatter graph settings:</h2>
       </div>
       <div id="pieChartSettings">
-        <h2>Pie chart settings:</h2>
       </div>
     </nav>
     <div id="chart"></div>

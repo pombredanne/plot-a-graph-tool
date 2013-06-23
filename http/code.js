@@ -6,6 +6,39 @@ String.prototype.endsWith = function (str){
   return this.slice(-str.length) == str
 }
 
+jQuery.when.all = function(deferreds) {
+  var dfd = new jQuery.Deferred()
+  $.when.apply(jQuery, deferreds).then(
+    function(){
+      dfd.resolve(Array.prototype.slice.call(arguments))
+    },
+    function(){
+      dfd.fail(Array.prototype.slice.call(arguments))
+    })
+  return dfd
+}
+
+function sqlEscape(str, literal) {
+  if(literal){
+    quote = "'" // set literal to true for strings you're inserting into a table
+    singleQuote = "''"
+    doubleQuote = '"'
+  } else {
+    quote = '"' // set literal to false for column and table names
+    singleQuote = "'"
+    doubleQuote = '""'
+  }
+  if(str === '' || str === null){
+    return 'NULL'
+  } else if(isNaN(str)){
+    str = str.replace(/[']/g, singleQuote)
+    str = str.replace(/["]/g, doubleQuote)
+    return quote + str + quote
+  } else {
+    return str
+  }
+}
+
 var filterUnderscores = function(names){
   return _.filter(names, function(name){
     if(name.startsWith('_')){ 
@@ -16,18 +49,48 @@ var filterUnderscores = function(names){
   })
 }
 
+var findTypes = function(meta){
+  var dfd = $.Deferred()
+  var queries = []
+  $.each(meta['table'], function(tableName, tableMeta){
+    meta['table'][tableName]['columnTypes'] = []
+    $.each(meta['table'][tableName]['columnNames'], function(columnIndex, columnName){
+      console.log('table =', tableName, 'columnIndex =', columnIndex, 'columnName =', columnName)
+      queries.push(
+        scraperwiki.sql('SELECT '+ sqlEscape(columnIndex, true) +' AS "columnIndex", '+ sqlEscape(tableName, true) +' AS "table", TYPEOF('+ sqlEscape(columnName) +') AS "type", COUNT(rowid) AS "n" FROM '+ sqlEscape(tableName) +' WHERE '+ sqlEscape(columnName) +' IS NOT NULL GROUP BY TYPEOF('+ sqlEscape(columnName) +')')
+      )
+    })
+  })
+  $.when.all(queries).done(function(results){
+    $.each(results, function(i, result){
+      var tableName = result[0][0]['table']
+      var columnIndex = result[0][0]['columnIndex']
+      if(result[0].length == 1){
+        meta['table'][tableName]['columnTypes'][columnIndex] = result[0][0]['type']
+      } else {
+        meta['table'][tableName]['columnTypes'][columnIndex] = 'mixed'
+      }
+    })
+    dfd.resolve(meta)
+  })
+  return dfd.promise()
+}
+
 var loadTables = function(){
   scraperwiki.sql.meta(function(meta){
-    datasetMeta = meta
-    tables = filterUnderscores(_.keys(meta.table))
-    if(tables.length){
-      $.each(tables, function(i, tableName){
-        $('<option>').text(tableName).val(tableName).appendTo('#sourceTables select')
-      })
-      selectTable()
-    } else {
-      scraperwiki.alert('This dataset is empty', 'Try running this tool again once you&rsquo;ve got some data.')
-    }
+    findTypes(meta).done(function(meta){
+      datasetMeta = meta
+      tables = filterUnderscores(_.keys(meta.table))
+      if(tables.length){
+        $.each(tables, function(i, tableName){
+          $('<option>').text(tableName).val(tableName).appendTo('#sourceTables select')
+        })
+        selectTable()
+        $('#chartTypes a').eq(0).trigger('click')
+      } else {
+        scraperwiki.alert('This dataset is empty', 'Try running this tool again once you&rsquo;ve got some data.')
+      }
+    })
   }, function(){
     scraperwiki.alert('An unexpected error occurred', 'scraperwiki.sql.meta() failed', 1)
   })
@@ -35,8 +98,12 @@ var loadTables = function(){
 
 var selectTable = function(){
   var selectedTable = $('#sourceTables select').val()
-  $.each(datasetMeta.table[selectedTable].columnNames, function(i, columnName){
-    $('<option>').text(columnName).val(columnName).appendTo('select.columns')
+  $.each(datasetMeta['table'][selectedTable]['columnNames'], function(columnIndex, columnName){
+    $('<option>').text(columnName).val(columnName).appendTo('select.hAxis')
+    var columnType = datasetMeta['table'][selectedTable]['columnTypes'][columnIndex]
+    if(columnType == 'real' || columnType == 'integer'){
+      $('<option>').text(columnName).val(columnName).appendTo('select.vAxis')
+    }
   })
 }
 
@@ -97,7 +164,6 @@ google.setOnLoadCallback(function(){
 
 $(function(){
   $(document).on('change', '#sourceTables', selectTable)
-  $(document).on('click', '#chartTypes a', refreshChart)
   $(document).on('change', 'select.columns', refreshChart)
   loadTables()
 })

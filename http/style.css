@@ -42,7 +42,8 @@ nav > div.active {
   display: block;
 }
 
-nav h2 {
+nav h2,
+nav label {
   margin: 0 0 10px 0;
   font-size: 12px;
   line-height: 12px;
@@ -52,10 +53,31 @@ nav h2 {
 }
 
 
+/* Table selector */
+
+p.inline-select label {
+  display: inline-block;
+  margin: 0 5px 0 0;
+}
+
+p.inline-select select {
+  margin: 0;
+  width: 200px;
+  height: 24px;
+  line-height: 24px;
+}
+
+p.inline-select {
+  text-align: center;
+  margin-left: -15px;
+  margin-right: -15px;
+}
+
+
 /* Chart type segmented control */
 
 #chartTypes {
-  margin: 0;
+  margin: 15px 0 0 0;
 }
 
 #chartTypes li {
@@ -71,6 +93,7 @@ nav h2 {
   border-radius: 0;
   height: 50px;
   text-indent: -9000px;
+  border-top: 1px solid #BBCEE4;
   border-bottom: 1px solid #BBCEE4;
   border-left: 1px solid #BBCEE4;
   background-position: center center;
@@ -94,7 +117,7 @@ nav h2 {
 
 #chartTypes li.active a {
   background-color: transparent;
-  background-position: ;
+  border-top: 1px solid #7496bd;
   border-left: 1px solid #7496bd;
   border-bottom: 1px solid #7496bd;
 }
@@ -133,12 +156,4 @@ nav h2 {
 
 #chartTypes li.active a[data-type="PieChart"] {
   background-image: url(img/pieChart-selected.png);
-}
-
-
-/* Table selector */
-
-#sourceTables select {
-  margin: 0;
-  width: 100%;
 }

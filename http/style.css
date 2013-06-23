@@ -30,16 +30,14 @@ nav {
 
 /* Sidebar structure */
 
-nav > div {
-  padding: 15px 15px 0 15px;
+nav > div,
+nav > section {
+  padding: 15px;
 }
 
-nav > div[id$="Settings"] {
+nav > section {
+  border-bottom: 1px solid #BBCEE4;
   display: none;
-}
-
-nav > div.active {
-  display: block;
 }
 
 nav h2,
@@ -50,6 +48,14 @@ nav label {
   font-weight: bold;
   text-transform: uppercase;
   color: #6e7e8d;
+}
+
+nav p {
+  margin-bottom: 10px;
+}
+
+nav p:last-child {
+  margin-bottom: 0;
 }
 
 
@@ -77,7 +83,7 @@ p.inline-select {
 /* Chart type segmented control */
 
 #chartTypes {
-  margin: 15px 0 0 0;
+  margin: 0;
 }
 
 #chartTypes li {
@@ -98,6 +104,7 @@ p.inline-select {
   border-left: 1px solid #BBCEE4;
   background-position: center center;
   background-repeat: no-repeat;
+  cursor: pointer;
 }
 
 #chartTypes li:first-child a {
@@ -156,4 +163,19 @@ p.inline-select {
 
 #chartTypes li.active a[data-type="PieChart"] {
   background-image: url(img/pieChart-selected.png);
+}
+
+
+/* Chart settings */
+
+p.inline-select input {
+  margin: 0;
+}
+
+p.inline-select input[type="checkbox"] {
+  vertical-align: 1px;
+}
+
+nav input[type="checkbox"] + label {
+  margin-left: 5px;
 }

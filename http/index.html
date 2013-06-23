@@ -22,33 +22,28 @@
         </p>
       </div>
       <ul id="chartTypes" class="nav nav-pills">
-        <li><a href="#barChartSettings" data-toggle="pill" data-type="ColumnChart">Bar Chart</a></li>
-        <li><a href="#lineChartSettings" data-toggle="pill" data-type="LineChart">Line Graph</a></li>
-        <li><a href="#scatterChartSettings" data-toggle="pill" data-type="ScatterChart">Scatter Graph</a></li>
-        <li><a href="#pieChartSettings" data-toggle="pill" data-type="PieChart">Pie Chart</a></li>
+        <li><a data-type="ColumnChart">Bar Chart</a></li>
+        <li><a data-type="LineChart">Line Graph</a></li>
+        <li><a data-type="ScatterChart">Scatter Graph</a></li>
+        <li><a data-type="PieChart">Pie Chart</a></li>
       </ul>
-      <div id="barChartSettings">
+      <section id="xAxisSettings">
         <p class="inline-select">
-          <label for="barChartXAxis">X-axis:</label>
-          <select id="barChartXAxis" class="columns hAxis"></select>
+          <label for="xAxis">X-axis:</label>
+          <select id="xAxis" class="columns hAxis"></select>
         </p>
+        <p class="inline-select mutually-exclusive">
+          <label>Sort:</label>
+          <input type="checkbox" id="sortAscending" name="sort"><label for="sortAscending" title="(small to big / A-Z)">ascending</label>
+          <input type="checkbox" id="sortDescending" name="sort"><label for="sortDescending" title="(big to small / Z-A)">descending</label>
+        </p>
+      </section>
+      <section id="yAxisSettings">
         <p class="inline-select">
-          <label for="barChartYAxis">Y-axis:</label>
-          <select id="barChartYAxis" class="columns vAxis"></select>
+          <label for="yAxis">Y-axis:</label>
+          <select id="yAxis" class="columns vAxis"></select>
         </p>
-        <p>
-          <label for="barChartOrderBy">X-axis order:</label>
-          <select id="barChartOrderBy" class="columns orderBy">
-            <option value="">(None)</option>
-          </select>
-        </p>
-      </div>
-      <div id="lineChartSettings">
-      </div>
-      <div id="scatterChartSettings">
-      </div>
-      <div id="pieChartSettings">
-      </div>
+      </section>
     </nav>
     <div id="chart"></div>
   </body>

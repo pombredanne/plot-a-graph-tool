@@ -55,7 +55,6 @@ var findTypes = function(meta){
   $.each(meta['table'], function(tableName, tableMeta){
     meta['table'][tableName]['columnTypes'] = []
     $.each(meta['table'][tableName]['columnNames'], function(columnIndex, columnName){
-      console.log('table =', tableName, 'columnIndex =', columnIndex, 'columnName =', columnName)
       queries.push(
         scraperwiki.sql('SELECT '+ sqlEscape(columnIndex, true) +' AS "columnIndex", '+ sqlEscape(tableName, true) +' AS "table", TYPEOF('+ sqlEscape(columnName) +') AS "type", COUNT(rowid) AS "n" FROM '+ sqlEscape(tableName) +' WHERE '+ sqlEscape(columnName) +' IS NOT NULL GROUP BY TYPEOF('+ sqlEscape(columnName) +')')
       )
@@ -99,10 +98,10 @@ var loadTables = function(){
 var selectTable = function(){
   var selectedTable = $('#sourceTables select').val()
   $.each(datasetMeta['table'][selectedTable]['columnNames'], function(columnIndex, columnName){
-    $('<option>').text(columnName).val(columnName).appendTo('select.hAxis')
+    $('<option>').text(columnName).val(columnName).appendTo('#xAxis')
     var columnType = datasetMeta['table'][selectedTable]['columnTypes'][columnIndex]
     if(columnType == 'real' || columnType == 'integer'){
-      $('<option>').text(columnName).val(columnName).appendTo('select.vAxis')
+      $('<option>').text(columnName).val(columnName).appendTo('#yAxis')
     }
   })
 }
@@ -110,52 +109,79 @@ var selectTable = function(){
 var refreshChart = function(){
   var selectedTable = $('#sourceTables select').val()
   var type = $('#chartTypes .active a').attr('data-type')
-  if(type == 'ColumnChart'){
-    hAxis = $('#barChartSettings .hAxis').val()
-    vAxis = $('#barChartSettings .vAxis').val()
-    if($('#barChartSettings .orderBy').val() != ''){
-      var orderBy = ' order by "' + $('#barChartSettings .orderBy').val() + '" desc'
-    } else {
-      var orderBy = ''
-    }
-    scraperwiki.sql('select "' + hAxis + '", "' + vAxis + '" from "' + selectedTable + '"' + orderBy, function(data){
-      if(data.length){
-        console.log('refreshChart() data =', data)
-        var googleData = googlifyData(data)
-        var chart = new google.visualization[type]($('#chart')[0])
-        var options = {
-          hAxis: {
-            title: hAxis
-          }, vAxis: {
-            title: vAxis
-          },
-          legend: {
-            position: 'none'
-          }
-        }
-        chart.draw(googleData, options)
-      } else {
-        scraperwiki.alert('This dataset is empty', 'Try running this tool again once you&rsquo;ve got some data.')
-      }
-    }, function(){
-      scraperwiki.alert('An unexpected error occurred', 'scraperwiki.sql() failed', 1)
-    })
+  var hAxis = $('#xAxis').val()
+  var vAxis = $('#yAxis').val()
+  if($('#sortAscending')[0].checked){
+    var orderBy = ' ORDER BY ' + sqlEscape(vAxis) + ' ASC'
+  } else if($('#sortDescending')[0].checked){
+    var orderBy = ' ORDER BY ' + sqlEscape(vAxis) + ' DESC' 
+  } else {
+    var orderBy = ''
   }
+  scraperwiki.sql('SELECT '+ sqlEscape(hAxis) +', '+ sqlEscape(vAxis) +' FROM '+ sqlEscape(selectedTable) + orderBy, function(data){
+    if(data.length){
+      console.log('refreshChart() data =', data)
+      var googleData = googlifyData(data)
+      var chart = new google.visualization[type]($('#chart')[0])
+      var options = {
+        hAxis: { title: hAxis }, 
+        vAxis: { title: vAxis },
+        legend: { position: 'none' }
+      }
+      if(type == 'PieChart'){
+        delete options.legend
+      }
+      chart.draw(googleData, options)
+    } else {
+      scraperwiki.alert('This dataset is empty', 'Try running this tool again once you&rsquo;ve got some data.')
+    }
+  }, function(){
+    scraperwiki.alert('An unexpected error occurred', 'scraperwiki.sql() failed', 1)
+  })
 }
 
 var googlifyData = function(data){
   // converts data from standard scraperwiki SQL API format
   // into the format Google Charts requires
+  var selectedTable = $('#sourceTables select').val()
   var dataList = []
   dataList.push(_.keys(data[0]))
   $.each(data, function(i, row){
-    dataList.push(_.values(row))
+    var values = []
+    $.each(row, function(columnName, value){
+      var columnIndex = datasetMeta['table'][selectedTable]['columnNames'].indexOf(columnName)
+      var columnType = datasetMeta['table'][selectedTable]['columnTypes'][columnIndex]
+      if(columnType == 'mixed' || columnType == 'text'){
+        values.push('' + value)
+      } else {
+        values.push(value)
+      }
+    })
+    dataList.push(values)
   })
   console.log('googlifyData() dataList =', dataList)
   return google.visualization.arrayToDataTable(dataList)
 }
 
+var switchType = function(e){
+  var $li = $(this).parent()
+  var type = $(this).attr('data-type')
+  if(!$li.is('.active')){
+    $li.addClass('active').siblings().removeClass('active')
+    $('nav > section').hide()
+    $(typePanels[type]).show()
+  }
+  refreshChart()
+}
+
 var datasetMeta = null
+
+var typePanels = {
+  ColumnChart: '#xAxisSettings, #yAxisSettings',
+  LineChart: '#xAxisSettings, #yAxisSettings',
+  ScatterChart: '#xAxisSettings, #yAxisSettings',
+  PieChart: '#xAxisSettings, #yAxisSettings'
+}
 
 google.load('visualization', '1.0', {'packages':['corechart']})
 google.setOnLoadCallback(function(){
@@ -163,7 +189,11 @@ google.setOnLoadCallback(function(){
 })
 
 $(function(){
-  $(document).on('change', '#sourceTables', selectTable)
-  $(document).on('change', 'select.columns', refreshChart)
+  $(document).on('change', '.mutually-exclusive :checkbox', function(){
+    if(this.checked){ $(this).siblings(':checked').attr('checked', false) }
+  })
+  $('#sourceTables').on('change', selectTable)
+  $('section select, section :checkbox').on('change', refreshChart)
+  $('#chartTypes a').on('click', switchType)
   loadTables()
 })

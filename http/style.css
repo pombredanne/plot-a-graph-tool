@@ -1,3 +1,144 @@
+html, body {
+  width: 100%;
+  height: 100%;
+}
+
 body {
+  position: relative;
   padding: 0;
+}
+
+nav {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  z-index: 10;
+  width: 300px;
+  background: #e4e8ee;
+  border-right: 1px solid #BBCEE4;
+}
+
+#chart {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 301px;
+}
+
+
+/* Sidebar structure */
+
+nav > div {
+  padding: 15px 15px 0 15px;
+}
+
+nav > div[id$="Settings"] {
+  display: none;
+}
+
+nav > div.active {
+  display: block;
+}
+
+nav h2 {
+  margin: 0 0 10px 0;
+  font-size: 12px;
+  line-height: 12px;
+  font-weight: bold;
+  text-transform: uppercase;
+  color: #6e7e8d;
+}
+
+
+/* Chart type segmented control */
+
+#chartTypes {
+  margin: 0;
+}
+
+#chartTypes li {
+  width: 25%;
+}
+
+#chartTypes li a {
+  display: block;
+  margin: 0;
+  padding: 0;
+  -webkit-border-radius: 0;
+  -moz-border-radius: 0;
+  border-radius: 0;
+  height: 50px;
+  text-indent: -9000px;
+  border-bottom: 1px solid #BBCEE4;
+  border-left: 1px solid #BBCEE4;
+  background-position: center center;
+  background-repeat: no-repeat;
+}
+
+#chartTypes li:first-child a {
+  border-left: none;
+}
+
+#chartTypes li.active {
+  background: #97b5d9;
+  background: -moz-linear-gradient(top,  #97b5d9 0%, #7496bd 100%);
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#97b5d9), color-stop(100%,#7496bd));
+  background: -webkit-linear-gradient(top,  #97b5d9 0%,#7496bd 100%);
+  background: -o-linear-gradient(top,  #97b5d9 0%,#7496bd 100%);
+  background: -ms-linear-gradient(top,  #97b5d9 0%,#7496bd 100%);
+  background: linear-gradient(to bottom,  #97b5d9 0%,#7496bd 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#97b5d9', endColorstr='#7496bd',GradientType=0 );
+}
+
+#chartTypes li.active a {
+  background-color: transparent;
+  background-position: ;
+  border-left: 1px solid #7496bd;
+  border-bottom: 1px solid #7496bd;
+}
+
+#chartTypes li.active + li a {
+  border-left: 1px solid #7496bd;
+}
+
+#chartTypes li a[data-type="ColumnChart"] {
+  background-image: url(img/barChart.png);
+}
+
+#chartTypes li.active a[data-type="ColumnChart"] {
+  background-image: url(img/barChart-selected.png);
+}
+
+#chartTypes li a[data-type="LineChart"] {
+  background-image: url(img/lineGraph.png);
+}
+
+#chartTypes li.active a[data-type="LineChart"] {
+  background-image: url(img/lineGraph-selected.png);
+}
+
+#chartTypes li a[data-type="ScatterChart"] {
+  background-image: url(img/scatterGraph.png);
+}
+
+#chartTypes li.active a[data-type="ScatterChart"] {
+  background-image: url(img/scatterGraph-selected.png);
+}
+
+#chartTypes li a[data-type="PieChart"] {
+  background-image: url(img/pieChart.png);
+}
+
+#chartTypes li.active a[data-type="PieChart"] {
+  background-image: url(img/pieChart-selected.png);
+}
+
+
+/* Table selector */
+
+#sourceTables select {
+  margin: 0;
+  width: 100%;
 }

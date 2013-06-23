@@ -130,6 +130,8 @@ var refreshChart = function(){
       }
       if(type == 'PieChart'){
         delete options.legend
+        options.is3D = $('#is3d')[0].checked
+        options.pieSliceText = $('#pieChartLabel').val()
       } else if(type == 'LineChart'){
         if($('#smoothCorners')[0].checked){
           options.curveType = 'function'
@@ -187,7 +189,7 @@ var typePanels = {
   ColumnChart: '#xAxisSettings, #yAxisSettings',
   LineChart: '#xAxisSettings, #yAxisSettings, #lineChartSettings',
   ScatterChart: '#xAxisSettings, #yAxisSettings',
-  PieChart: '#xAxisSettings, #yAxisSettings'
+  PieChart: '#xAxisSettings, #yAxisSettings, #pieChartLabels, #pieChart3d'
 }
 
 google.load('visualization', '1.0', {'packages':['corechart']})

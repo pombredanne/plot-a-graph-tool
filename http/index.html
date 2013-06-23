@@ -54,6 +54,23 @@
           <label for="pointCorners">Show points on corners</label>
         </p>
       </section>
+      <section id="pieChartLabels">
+        <p class="inline-select">
+          <label for="pieChartLabel">Labels:</label>
+          <select id="pieChartLabel">
+            <option value="percentage" selected="selected">Y-axis percentage</option>
+            <option value="value">Y-axis value</option>
+            <option value="label">X-axis value</option>
+            <option value="none">No labels</option>
+          </select>
+        </p>
+      </section>
+      <section id="pieChart3d">
+        <p>
+          <input type="checkbox" id="is3d">
+          <label for="is3d">Gratuitous 3D effect</label>
+        </p>
+      </section>
     </nav>
     <div id="chart"></div>
   </body>

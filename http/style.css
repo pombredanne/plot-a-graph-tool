@@ -40,18 +40,8 @@ nav > section {
   display: none;
 }
 
-nav h2,
-nav label {
-  margin: 0 0 10px 0;
-  font-size: 12px;
-  line-height: 12px;
-  font-weight: bold;
-  text-transform: uppercase;
-  color: #6e7e8d;
-}
-
 nav p {
-  margin-bottom: 10px;
+  margin-bottom: 5px;
 }
 
 nav p:last-child {
@@ -59,12 +49,34 @@ nav p:last-child {
 }
 
 
-/* Table selector */
+/* Form elements */
+
+input {
+  margin: 0;
+}
+
+input[type="checkbox"] {
+  vertical-align: 1px;
+}
+
+label {
+  display: inline-block;
+  margin: 0;
+  font-size: 12px;
+  line-height: 12px;
+  font-weight: bold;
+  text-transform: uppercase;
+  color: #6e7e8d;
+}
+
+input[type="checkbox"] + label,
+p.inline-select input[type="checkbox"] + label {
+  margin-left: 5px;
+}
 
 p.inline-select label {
-  display: inline-block;
   margin: 0 5px 0 0;
-}
+} 
 
 p.inline-select select {
   margin: 0;
@@ -83,7 +95,7 @@ p.inline-select {
 /* Chart type segmented control */
 
 #chartTypes {
-  margin: 0;
+  margin: 0 -1px 0 0;
 }
 
 #chartTypes li {
@@ -133,6 +145,14 @@ p.inline-select {
   border-left: 1px solid #7496bd;
 }
 
+#chartTypes li:last-child a {
+  border-right: 1px solid #BBCEE4;
+}
+
+#chartTypes li.active:last-child a {
+  border-right: 1px solid #7496bd;
+}
+
 #chartTypes li a[data-type="ColumnChart"] {
   background-image: url(img/barChart.png);
 }
@@ -163,19 +183,4 @@ p.inline-select {
 
 #chartTypes li.active a[data-type="PieChart"] {
   background-image: url(img/pieChart-selected.png);
-}
-
-
-/* Chart settings */
-
-p.inline-select input {
-  margin: 0;
-}
-
-p.inline-select input[type="checkbox"] {
-  vertical-align: 1px;
-}
-
-nav input[type="checkbox"] + label {
-  margin-left: 5px;
 }

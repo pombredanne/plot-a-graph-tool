@@ -130,6 +130,13 @@ var refreshChart = function(){
       }
       if(type == 'PieChart'){
         delete options.legend
+      } else if(type == 'LineChart'){
+        if($('#smoothCorners')[0].checked){
+          options.curveType = 'function'
+        }
+        if($('#pointCorners')[0].checked){
+          options.pointSize = 5
+        }
       }
       chart.draw(googleData, options)
     } else {
@@ -178,7 +185,7 @@ var datasetMeta = null
 
 var typePanels = {
   ColumnChart: '#xAxisSettings, #yAxisSettings',
-  LineChart: '#xAxisSettings, #yAxisSettings',
+  LineChart: '#xAxisSettings, #yAxisSettings, #lineChartSettings',
   ScatterChart: '#xAxisSettings, #yAxisSettings',
   PieChart: '#xAxisSettings, #yAxisSettings'
 }

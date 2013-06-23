@@ -34,14 +34,24 @@
         </p>
         <p class="inline-select mutually-exclusive">
           <label>Sort:</label>
-          <input type="checkbox" id="sortAscending" name="sort"><label for="sortAscending" title="(small to big / A-Z)">ascending</label>
-          <input type="checkbox" id="sortDescending" name="sort"><label for="sortDescending" title="(big to small / Z-A)">descending</label>
+          <input type="checkbox" id="sortAscending"><label for="sortAscending" title="(small to big / A-Z)">ascending</label>
+          <input type="checkbox" id="sortDescending"><label for="sortDescending" title="(big to small / Z-A)">descending</label>
         </p>
       </section>
       <section id="yAxisSettings">
         <p class="inline-select">
           <label for="yAxis">Y-axis:</label>
           <select id="yAxis" class="columns vAxis"></select>
+        </p>
+      </section>
+      <section id="lineChartSettings">
+        <p>
+          <input type="checkbox" id="smoothCorners">
+          <label for="smoothCorners">Smooth corners</label>
+        </p>
+        <p>
+          <input type="checkbox" id="pointCorners">
+          <label for="pointCorners">Show points on corners</label>
         </p>
       </section>
     </nav>

@@ -139,6 +139,10 @@ var refreshChart = function(){
         if($('#pointCorners')[0].checked){
           options.pointSize = 5
         }
+      } else if(type == 'ScatterChart'){
+        if($('#trendline')[0].checked){
+          options.trendlines = { 0: {} }
+        }
       }
       chart.draw(googleData, options)
     } else {
@@ -188,7 +192,7 @@ var datasetMeta = null
 var typePanels = {
   ColumnChart: '#xAxisSettings, #yAxisSettings',
   LineChart: '#xAxisSettings, #yAxisSettings, #lineChartSettings',
-  ScatterChart: '#xAxisSettings, #yAxisSettings',
+  ScatterChart: '#xAxisSettings, #yAxisSettings, #scatterTrendline',
   PieChart: '#xAxisSettings, #yAxisSettings, #pieChartLabels, #pieChart3d'
 }
 

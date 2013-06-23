@@ -98,11 +98,8 @@ var loadTables = function(){
 var selectTable = function(){
   var selectedTable = $('#sourceTables select').val()
   $.each(datasetMeta['table'][selectedTable]['columnNames'], function(columnIndex, columnName){
-    $('<option>').text(columnName).val(columnName).appendTo('#xAxis')
     var columnType = datasetMeta['table'][selectedTable]['columnTypes'][columnIndex]
-    if(columnType == 'real' || columnType == 'integer'){
-      $('<option>').text(columnName).val(columnName).appendTo('#yAxis')
-    }
+    $('<option>').text(columnName).val(columnName).addClass(columnType).appendTo('#xAxis, #yAxis')
   })
 }
 
@@ -183,6 +180,16 @@ var switchType = function(e){
     $li.addClass('active').siblings().removeClass('active')
     $('nav > section').hide()
     $(typePanels[type]).show()
+  }
+  if(type == 'ScatterChart'){
+    $('#xAxis option, #yAxis option').attr('disabled', false)
+    $('#xAxis .mixed, #xAxis .text, #yAxis .mixed, #yAxis .text').attr('disabled', true)
+    if($('#xAxis :selected').is(':disabled')){
+      $('#xAxis').val( $('#xAxis option').not(':disabled').eq(0).val() )
+    }
+  } else {
+    $('#xAxis option, #yAxis option').attr('disabled', false)
+    $('#yAxis .mixed, #yAxis .text').attr('disabled', true)
   }
   refreshChart()
 }

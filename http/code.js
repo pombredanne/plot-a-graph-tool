@@ -115,10 +115,9 @@ var refreshChart = function(){
   } else {
     var orderBy = ''
   }
-  scraperwiki.sql('SELECT '+ sqlEscape(hAxis) +', '+ sqlEscape(vAxis) +' FROM '+ sqlEscape(selectedTable) + orderBy, function(data){
+  scraperwiki.sql('SELECT '+ sqlEscape(hAxis) +' AS "hAxis", '+ sqlEscape(vAxis) +' AS "vAxis" FROM '+ sqlEscape(selectedTable) + orderBy, function(data){
     if(data.length){
-      console.log('refreshChart() data =', data)
-      var googleData = googlifyData(data)
+      var googleData = googlifyData(data, {hAxis: hAxis, vAxis: vAxis})
       var chart = new google.visualization[type]($('#chart')[0])
       var options = {
         width: $('#chart').width() - 25,
@@ -152,16 +151,16 @@ var refreshChart = function(){
   })
 }
 
-var googlifyData = function(data){
+var googlifyData = function(data, keys){
   // converts data from standard scraperwiki SQL API format
   // into the format Google Charts requires
   var selectedTable = $('#sourceTables select').val()
   var dataList = []
-  dataList.push(_.keys(data[0]))
+  dataList.push(_.values(keys))
   $.each(data, function(i, row){
     var values = []
     $.each(row, function(columnName, value){
-      var columnIndex = datasetMeta['table'][selectedTable]['columnNames'].indexOf(columnName)
+      var columnIndex = datasetMeta['table'][selectedTable]['columnNames'].indexOf(keys[columnName])
       var columnType = datasetMeta['table'][selectedTable]['columnTypes'][columnIndex]
       if(columnType == 'mixed' || columnType == 'text'){
         values.push('' + value)
@@ -171,7 +170,6 @@ var googlifyData = function(data){
     })
     dataList.push(values)
   })
-  console.log('googlifyData() dataList =', dataList)
   return google.visualization.arrayToDataTable(dataList)
 }
 

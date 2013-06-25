@@ -217,11 +217,12 @@ google.setOnLoadCallback(function(){
 })
 
 $(function(){
-  $(document).on('change', '.mutually-exclusive :checkbox', function(){
-    if(this.checked){ $(this).siblings(':checked').attr('checked', false) }
-  })
   $('#sourceTables').on('change', selectTable)
-  $('section select, section :checkbox').on('change', refreshChart)
+  $('section select, section :checkbox').not('.mutually-exclusive :checkbox').on('change', refreshChart)
+  $('.mutually-exclusive :checkbox').on('change', function(){
+    if(this.checked){ $(this).siblings(':checked').attr('checked', false) }
+    refreshChart()
+  })
   $('#chartTypes a').on('click', switchType)
   loadTables()
 })

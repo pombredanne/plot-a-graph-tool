@@ -121,6 +121,8 @@ var refreshChart = function(){
       var googleData = googlifyData(data)
       var chart = new google.visualization[type]($('#chart')[0])
       var options = {
+        width: $('#chart').width() - 25,
+        height: $('#chart').height() - 25,
         hAxis: { title: hAxis }, 
         vAxis: { title: vAxis },
         legend: { position: 'none' }

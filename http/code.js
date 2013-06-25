@@ -189,6 +189,12 @@ var switchType = function(e){
     if($('#xAxis :selected').is(':disabled')){
       $('#xAxis').val( $('#xAxis option').not(':disabled').eq(0).val() )
     }
+  } else if(type == 'PieChart'){
+    $('#xAxis option, #yAxis option').attr('disabled', false)
+    $('#xAxis .integer, #xAxis .real').attr('disabled', true)
+    if($('#xAxis :selected').is(':disabled')){
+      $('#xAxis').val( $('#xAxis option').not(':disabled').eq(0).val() )
+    }
   } else {
     $('#xAxis option, #yAxis option').attr('disabled', false)
     $('#yAxis .mixed, #yAxis .text').attr('disabled', true)

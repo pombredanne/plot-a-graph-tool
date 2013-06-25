@@ -1,4 +1,6 @@
 {
   "displayName": "Plot a graph",
-  "description": "Bar charts, pie charts, scatter graphs and more"
+  "description": "Bar charts, pie charts, scatter graphs and more",
+  "icon": "https://s3-eu-west-1.amazonaws.com/sw-icons/tool-icon-plot-a-graph.png",
+  "color": "#5592DB"
 }

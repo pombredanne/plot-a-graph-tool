@@ -216,7 +216,10 @@ google.setOnLoadCallback(function(){
 })
 
 $(function(){
-  $('#sourceTables').on('change', selectTable)
+  $('#sourceTables').on('change', function(){
+    selectTable()
+    refreshChart()
+  })
   $('section select, section :checkbox').not('.mutually-exclusive :checkbox').on('change', refreshChart)
   $('.mutually-exclusive :checkbox').on('change', function(){
     if(this.checked){ $(this).siblings(':checked').attr('checked', false) }

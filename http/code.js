@@ -144,8 +144,14 @@ var refreshChart = function(){
         }
       }
       if(type != 'PieChart'){
-        options.hAxis.logScale = $('#xAxisLogScale').is(':checked')
-        options.vAxis.logScale = $('#yAxisLogScale').is(':checked')
+        if($('#xAxisLogScale').is(':checked')){
+          options.hAxis.logScale = true
+          options.hAxis.minorGridlines = { color: '#eee', count: 10 }
+        }
+        if($('#yAxisLogScale').is(':checked')){
+          options.vAxis.logScale = true
+          options.vAxis.minorGridlines = { color: '#eee', count: 10 }
+        }
       }
       chart.draw(googleData, options)
     } else {

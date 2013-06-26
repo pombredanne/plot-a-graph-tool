@@ -143,6 +143,10 @@ var refreshChart = function(){
           options.trendlines = { 0: {} }
         }
       }
+      if(type != 'PieChart'){
+        options.hAxis.logScale = $('#xAxisLogScale').is(':checked')
+        options.vAxis.logScale = $('#yAxisLogScale').is(':checked')
+      }
       chart.draw(googleData, options)
     } else {
       scraperwiki.alert('This dataset is empty', 'Try running this tool again once you&rsquo;ve got some data.')
@@ -204,9 +208,9 @@ var switchType = function(e){
 var datasetMeta = null
 
 var typePanels = {
-  ColumnChart: '#xAxisSettings, #yAxisSettings',
-  LineChart: '#xAxisSettings, #yAxisSettings, #lineChartSettings',
-  ScatterChart: '#xAxisSettings, #yAxisSettings, #scatterTrendline',
+  ColumnChart: '#xAxisSettings, #yAxisSettings, #logScale',
+  LineChart: '#xAxisSettings, #yAxisSettings, #lineChartSettings, #logScale',
+  ScatterChart: '#xAxisSettings, #yAxisSettings, #scatterTrendline, #logScale',
   PieChart: '#xAxisSettings, #yAxisSettings, #pieChartLabels, #pieChart3d'
 }
 

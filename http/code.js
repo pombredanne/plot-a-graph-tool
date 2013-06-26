@@ -96,6 +96,7 @@ var loadTables = function(){
 }
 
 var selectTable = function(){
+  $('#xAxis, #yAxis').empty()
   var selectedTable = $('#sourceTables select').val()
   $.each(datasetMeta['table'][selectedTable]['columnNames'], function(columnIndex, columnName){
     var columnType = datasetMeta['table'][selectedTable]['columnTypes'][columnIndex]
